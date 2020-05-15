@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
+	"github.com/kyma-incubator/compass/tests/e2e/provisioning/internal/logging"
 	"net/http"
 	"testing"
 	"time"
@@ -37,6 +38,7 @@ type Config struct {
 	Runtime  runtime.Config
 	Director director.Config
 	Gardener gardener.Config
+	logging  logging.Config
 
 	TenantID             string `default:"d9994f8f-7e46-42a8-b2c1-1bfff8d2fe05"`
 	SkipCertVerification bool   `envconfig:"default=true"`
@@ -62,6 +64,7 @@ type Suite struct {
 	configMapClient v1_client.ConfigMaps
 	accountProvider hyperscaler.AccountProvider
 	azureClient     *azure.Interface
+	loggingClient 	*logging.Client
 
 	dashboardChecker *runtime.DashboardChecker
 
@@ -143,6 +146,7 @@ func newTestSuite(t *testing.T) *Suite {
 
 	dashboardChecker := runtime.NewDashboardChecker(*httpClient, log.WithField("service", "dashboard_checker"))
 
+	loggingClient := logging.NewLoggingClient(cfg.logging)
 	if cfg.TestAzureEventHubsEnabled {
 		azureClient = newAzureClient(t, cfg, brokerClient.GlobalAccountID())
 	}

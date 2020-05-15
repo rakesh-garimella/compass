@@ -55,6 +55,13 @@ func Test_E2E_Provisioning(t *testing.T) {
 		ts.log.Info("Checking the provisioned Azure EventHubs")
 		checkAzureEventHubProperties(ts, t, operationID)
 	}
+	chekLoggingConfigMap(config,t)
+
+}
+
+func chekLoggingConfigMap(config *string, t *testing.T) {
+
+
 }
 
 func checkAzureEventHubProperties(ts *Suite, t *testing.T, operationID string) {
